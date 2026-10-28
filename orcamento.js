@@ -109,13 +109,18 @@
       document.title = 'Orçamento · ' + nome + ' · Studio Kairós';
     }
 
-    var soma = S.reduce(function (t, s) { return t + s.total; }, 0);
+    // Social Media é mensal: não entra na soma dos projetos (para não assustar com o total dos 3 meses)
+    var projS = esp ? S : S.filter(function (s) { return !s.mensal; });
+    var recS = esp ? [] : S.filter(function (s) { return s.mensal; });
+    var soloSocial = !esp && !projS.length && recS.length > 0;
+    var base = soloSocial ? recS : projS;
+    var soma = base.reduce(function (t, s) { return t + s.total; }, 0);
     var cred = Math.max(0, Math.min(Number(esp ? esp.credito : q.get("c")) || 0, Math.floor(soma * (P.limiteCredito || 50) / 100))); // crédito do Clube, no máximo 50% do projeto
     soma -= cred;
     var avista = Math.round(soma * (1 - P.descontoAvista / 100));
-    var temSocial = S.some(function (s) { return s.mensal; });
-    var cartaoDefinido = S.every(function (s) { return s.cartao; });
-    var cartao = S.reduce(function (t, s) { return t + (s.cartao || s.total); }, 0) - cred;
+    var temSocial = false;
+    var cartaoDefinido = base.every(function (s) { return s.cartao; });
+    var cartao = base.reduce(function (t, s) { return t + (s.cartao || s.total); }, 0) - cred;
 
     byId('escopoTitulo').textContent = S.length === 1 ? S[0].nome + '.' : 'Os seus serviços.';
 
@@ -153,9 +158,16 @@
     f1.appendChild(el('span', 'fact-v', S.length === 1 ? S[0].prazo + ' dias úteis' : 'Conforme cada serviço'));
     f1.appendChild(el('span', 'fact-s', S.length === 1 ? 'A partir da aprovação do orçamento e da conversa de briefing.' : 'Cada serviço tem o seu prazo, indicado acima.'));
     var f2 = el('div', 'fact');
-    f2.appendChild(el('span', 'fact-k', 'Investimento total'));
-    f2.appendChild(el('span', 'fact-v', money(soma)));
-    f2.appendChild(el('span', 'fact-s', S.map(function (s) { return s.nome + (s.totalNota ? ' (' + s.totalNota + ')' : ''); }).join(' + ') + (cred ? ' · já com o crédito do Clube de ' + money(cred) + ' descontado' : '')));
+    if (soloSocial) {
+      // só Social Media: mostra o valor do mês, não o total do contrato
+      f2.appendChild(el('span', 'fact-k', 'Investimento'));
+      f2.appendChild(el('span', 'fact-v', money(recS[0].total / 3) + ' por mês'));
+      f2.appendChild(el('span', 'fact-s', 'Contrato mínimo de 3 meses. Você também pode pagar os 3 meses de uma vez no Pix, com desconto.'));
+    } else {
+      f2.appendChild(el('span', 'fact-k', 'Investimento total'));
+      f2.appendChild(el('span', 'fact-v', money(soma)));
+      f2.appendChild(el('span', 'fact-s', projS.map(function (s) { return s.nome + (s.totalNota ? ' (' + s.totalNota + ')' : ''); }).join(' + ') + (recS.length ? ' · mais Social Media: ' + money(recS[0].total / 3) + ' por mês' : '') + (cred ? ' · já com o crédito do Clube de ' + money(cred) + ' descontado' : '')));
+    }
     facts.appendChild(f1); facts.appendChild(f2);
 
     var grid = byId('paygrid');
@@ -189,6 +201,16 @@
       byId('payExtra').hidden = true;
       var fechar = document.querySelector('#fechar .lead');
       if (fechar) fechar.textContent = 'Condição exclusiva, criada especialmente para você. É só aprovar que a gente já começa.';
+    } else if (soloSocial) {
+      var mes = recS[0].total / 3;
+      pay(false, '', 'Mês a mês', money(mes), 'por mês', '',
+        'Contrato mínimo de 3 meses. Pagamento no Pix ou cartão, antes de cada mês começar. A taxa do cartão é repassada.');
+      pay(true, 'Melhor opção', '3 meses à vista, no Pix', money(avista), money(soma),
+        P.descontoAvista + '% de desconto · economize ' + money(soma - avista),
+        'Pagamento único na aprovação do orçamento. Cobre os 3 meses do contrato.', true);
+      byId('payExtra').textContent = 'Pagamento por Pix ou cartão. Depois dos 3 meses, o contrato segue mês a mês.';
+      var fecharS = document.querySelector('#fechar .lead');
+      if (fecharS) fecharS.textContent = 'Social Media por ' + money(mes) + ' por mês, com contrato mínimo de 3 meses (ou ' + money(avista) + ' pagando os 3 meses à vista no Pix). É só aprovar que a gente já começa.';
     } else {
       pay(true, 'Melhor opção', 'No Pix, à vista', money(avista), money(soma),
         P.descontoAvista + '% de desconto · economize ' + money(soma - avista),
@@ -200,7 +222,7 @@
       pay(false, '', 'No cartão', money(cartao), cartaoDefinido ? 'em até 5x sem juros' : '', '',
         cartaoDefinido ? 'A taxa do cartão já está incluída no valor.' : 'Sem desconto. Parcelado com os juros da maquininha do seu cartão.');
       if (grid.children.length === 3) grid.classList.add('paygrid--3');
-      byId('payExtra').textContent = 'Pagamento por Pix ou cartão, com a taxa do cartão repassada.';
+      byId('payExtra').textContent = 'Pagamento por Pix ou cartão, com a taxa do cartão repassada.' + (recS.length ? ' O Social Media é à parte: ' + money(recS[0].total / 3) + ' por mês, ou ' + money(Math.round(recS[0].total * (1 - P.descontoAvista / 100))) + ' pagando os 3 meses à vista no Pix.' : '');
       byId('totalTxt').textContent = money(soma);
       byId('totalPix').textContent = money(avista);
     }
