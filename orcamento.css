@@ -420,3 +420,4 @@
   .phead-inner > * { animation: fadeSoft .8s ease both !important; }
 }
 .nav.show-home .nav-home { display: inline-block; animation: fadeSoft .4s ease both; }
+@media (min-width: 861px) { .nav.show-home .nav-home { display: none; } }
