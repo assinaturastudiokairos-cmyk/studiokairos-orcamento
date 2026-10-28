@@ -160,9 +160,9 @@
     var f2 = el('div', 'fact');
     if (soloSocial) {
       // só Social Media: mostra o valor do mês, não o total do contrato
-      f2.appendChild(el('span', 'fact-k', 'Investimento'));
-      f2.appendChild(el('span', 'fact-v', money(recS[0].total / 3) + ' por mês'));
-      f2.appendChild(el('span', 'fact-s', 'Contrato mínimo de 3 meses. Você também pode pagar os 3 meses de uma vez no Pix, com desconto.'));
+      f2.appendChild(el('span', 'fact-k', 'Duração do contrato'));
+      f2.appendChild(el('span', 'fact-v', 'Mínimo de 3 meses'));
+      f2.appendChild(el('span', 'fact-s', 'Depois dos 3 meses, o contrato segue mês a mês. As formas de pagamento estão logo abaixo.'));
     } else {
       f2.appendChild(el('span', 'fact-k', 'Investimento total'));
       f2.appendChild(el('span', 'fact-v', money(soma)));
@@ -204,11 +204,11 @@
     } else if (soloSocial) {
       var mes = recS[0].total / 3;
       pay(false, '', 'Mês a mês', money(mes), 'por mês', '',
-        'Contrato mínimo de 3 meses. Pagamento no Pix ou cartão, antes de cada mês começar. A taxa do cartão é repassada.');
+        'Pagamento no Pix ou cartão, antes de cada mês começar. A taxa do cartão é repassada.');
       pay(true, 'Melhor opção', '3 meses à vista, no Pix', money(avista), money(soma),
         P.descontoAvista + '% de desconto · economize ' + money(soma - avista),
         'Pagamento único na aprovação do orçamento. Cobre os 3 meses do contrato.', true);
-      byId('payExtra').textContent = 'Pagamento por Pix ou cartão. Depois dos 3 meses, o contrato segue mês a mês.';
+      byId('payExtra').hidden = true; // não repete o que os cartões já dizem
       var fecharS = document.querySelector('#fechar .lead');
       if (fecharS) fecharS.textContent = 'Social Media por ' + money(mes) + ' por mês, com contrato mínimo de 3 meses (ou ' + money(avista) + ' pagando os 3 meses à vista no Pix). É só aprovar que a gente já começa.';
     } else {
