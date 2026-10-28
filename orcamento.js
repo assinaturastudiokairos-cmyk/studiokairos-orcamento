@@ -203,14 +203,15 @@
       if (fechar) fechar.textContent = 'Condição exclusiva, criada especialmente para você. É só aprovar que a gente já começa.';
     } else if (soloSocial) {
       var mes = recS[0].total / 3;
-      pay(false, '', 'Mês a mês', money(mes), 'por mês', '',
-        'Pagamento no Pix ou cartão, antes de cada mês começar. A taxa do cartão é repassada.');
+      var mesPix = Math.round(mes * (1 - P.descontoAvista / 100));
+      pay(false, '', 'Mês a mês', money(mesPix), 'no 1º mês, no Pix', P.descontoAvista + '% de desconto no primeiro pagamento no Pix',
+        'Nos outros meses: ' + money(mes) + ' por mês. Pagamento no Pix ou cartão, antes de cada mês começar. A taxa do cartão é repassada.');
       pay(true, 'Melhor opção', '3 meses à vista, no Pix', money(avista), money(soma),
         P.descontoAvista + '% de desconto · economize ' + money(soma - avista),
         'Pagamento único na aprovação do orçamento. Cobre os 3 meses do contrato.', true);
       byId('payExtra').hidden = true; // não repete o que os cartões já dizem
       var fecharS = document.querySelector('#fechar .lead');
-      if (fecharS) fecharS.textContent = 'Social Media por ' + money(mes) + ' por mês, com contrato mínimo de 3 meses (ou ' + money(avista) + ' pagando os 3 meses à vista no Pix). É só aprovar que a gente já começa.';
+      if (fecharS) fecharS.textContent = 'Social Media por ' + money(mes) + ' por mês (com ' + P.descontoAvista + '% de desconto no primeiro pagamento no Pix), contrato mínimo de 3 meses. Ou ' + money(avista) + ' pagando os 3 meses à vista no Pix. É só aprovar que a gente já começa.';
     } else {
       pay(true, 'Melhor opção', 'No Pix, à vista', money(avista), money(soma),
         P.descontoAvista + '% de desconto · economize ' + money(soma - avista),
