@@ -209,7 +209,7 @@
       var desc3 = P.descontoSocial3Meses || 0; // nos 3 meses à vista o desconto é em reais, não em porcentagem
       avista = soma - desc3;
       pay(true, 'Melhor opção', '3 meses à vista, no Pix', money(avista), money(soma),
-        money(desc3) + ' de desconto · economize ' + money(desc3),
+        'Economize ' + money(desc3) + ' pagando os 3 meses de uma vez',
         'Pagamento único na aprovação do orçamento. Cobre os 3 meses do contrato.', true);
       byId('payExtra').hidden = true; // não repete o que os cartões já dizem
       var fecharS = document.querySelector('#fechar .lead');
