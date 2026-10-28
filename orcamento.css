@@ -289,7 +289,8 @@
 .rings span:nth-child(3) { width: 1080px; }
 
 /* Regras do crédito do Clube */
-.rules { margin-top: clamp(28px, 4vw, 48px); display: grid; gap: 26px; }
+.rules { margin-top: clamp(64px, 9vw, 100px); display: grid; gap: 26px; }
+.rules-head .tag { justify-self: center; }
 .rules-head { display: grid; gap: 14px; justify-items: center; text-align: center; }
 .rules-title { font-size: clamp(1.4rem, 3vw, 2.2rem); text-transform: uppercase; letter-spacing: -.01em; line-height: 1.1; }
 .rules-steps { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 14px; }
