@@ -159,13 +159,13 @@
     facts.appendChild(f1); facts.appendChild(f2);
 
     var grid = byId('paygrid');
-    var pay = function (hl, badge, k, big, small, off, note) {
+    var pay = function (hl, badge, k, big, small, off, note, riscar) {
       var c = el('div', 'pay reveal' + (hl ? ' pay-hl' : ''));
       if (badge) c.appendChild(el('span', 'pay-badge', badge));
       c.appendChild(el('span', 'pay-k', k));
       var v = el('div', 'pay-v');
       v.appendChild(el('b', null, big));
-      if (small) v.appendChild(el(hl ? 's' : 'span', null, small));
+      if (small) v.appendChild(el(riscar ? 's' : 'span', null, small)); // só o preço antigo do desconto à vista fica riscado
       c.appendChild(v);
       if (off) c.appendChild(el('span', 'pay-off', off));
       c.appendChild(el('p', 'pay-note', note));
@@ -175,7 +175,7 @@
     if (pagEsp.length) {
       // condição combinada só para este cliente: os cartões vêm prontos do CRM
       pagEsp.forEach(function (p, i) {
-        pay(i === 0, i === 0 ? 'Condição combinada' : '', String(p.titulo || '').slice(0, 60), String(p.destaque || '').slice(0, 40), String(p.pequeno || '').slice(0, 40), '', String(p.nota || '').slice(0, 200));
+        pay(i === 0, i === 0 ? 'Condição combinada' : '', String(p.titulo || '').slice(0, 60), String(p.destaque || '').slice(0, 40), String(p.pequeno || '').slice(0, 40), '', String(p.nota || '').slice(0, 200), p.riscado === true);
       });
       if (grid.children.length === 3) grid.classList.add('paygrid--3');
       byId('payExtra').textContent = (esp.obs ? String(esp.obs).slice(0, 300) : 'Condição combinada especialmente para você.');
@@ -184,7 +184,7 @@
     } else {
       pay(true, 'Melhor opção', 'No Pix, à vista', money(avista), money(soma),
         P.descontoAvista + '% de desconto · economize ' + money(soma - avista),
-        'Pagamento único na aprovação do orçamento.');
+        'Pagamento único na aprovação do orçamento.', true);
       if (!temSocial) {
         pay(false, '', 'No Pix, em 2 vezes', money(soma / 2), '+ ' + money(soma / 2), '',
           'Metade na entrada e metade na entrega final. O primeiro pagamento é antes de começar.');
