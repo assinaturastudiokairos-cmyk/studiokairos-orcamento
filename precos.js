@@ -34,7 +34,6 @@ window.PRECOS = {
         '3 posts',
         'Logos em PNG, PDF e SVG'
       ],
-      destaque: '2 rodadas de ajuste antes de aprovar. Depois de aprovada, não há alterações.'
     },
     landing: {
       nome: 'Landing page',
@@ -47,11 +46,10 @@ window.PRECOS = {
       hospedagem: 97,
       manutencao: 247,
       itens: [
-        'Uma página',
+        'Uma página única e completa, com visual sofisticado',
         'Copy, design e implementação',
         'Hospedagem obrigatória: R$ 97 por mês (1 mês grátis)'
       ],
-      destaque: '2 rodadas de ajuste. A partir da terceira, R$ 250 por rodada.'
     },
     site: {
       nome: 'Site institucional',
@@ -68,7 +66,6 @@ window.PRECOS = {
         'Copy, design e implementação',
         'Hospedagem obrigatória: R$ 147 por mês (1 mês grátis)'
       ],
-      destaque: '2 rodadas de ajuste. A partir da terceira, R$ 250 por rodada.'
     }
   },
   manutencao: {
