@@ -182,6 +182,18 @@
     }
   })();
 
+  /* ---------- Faixa de logos: duplica a lista para a esteira girar sem emenda ---------- */
+  (function () {
+    var track = document.querySelector('.logos-track');
+    if (!track || reduce) return;
+    Array.prototype.slice.call(track.children).forEach(function (li) {
+      var c = li.cloneNode(true);
+      c.setAttribute('aria-hidden', 'true');
+      c.querySelector('img').alt = '';
+      track.appendChild(c);
+    });
+  })();
+
   /* ---------- Animação ao rolar ---------- */
   var els = document.querySelectorAll('.reveal');
   if (!('IntersectionObserver' in window) || reduce) {
