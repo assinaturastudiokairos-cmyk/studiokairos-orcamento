@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Proposta · [Nome do Cliente] · Studio Kairós</title>
+<title>Proposta · Studio Kairós</title>
 <meta name="description" content="Proposta de projeto preparada pelo Studio Kairós.">
 <meta name="robots" content="noindex, nofollow">
 <meta name="theme-color" content="#121212">
@@ -41,7 +41,7 @@
     <h1>Um projeto à altura do <span class="gold">seu</span> negócio.</h1>
     <p class="lead">Abaixo, o escopo, o prazo e o investimento do projeto, tudo explicado de forma simples.</p>
     <div class="pmeta">
-      <div class="pmeta-i"><span class="pmeta-k">Preparado para</span><span class="pmeta-v">[Nome do Cliente]</span></div>
+      <div class="pmeta-i"><span class="pmeta-k">Preparado para</span><span class="pmeta-v js-nome">[Nome do Cliente]</span></div>
       <div class="pmeta-i"><span class="pmeta-k">Por</span><span class="pmeta-v">Studio Kairós</span></div>
       <div class="pmeta-i"><span class="pmeta-k">Emitida em</span><span class="pmeta-v" id="pData">·</span></div>
     </div>
@@ -73,29 +73,15 @@
     </div>
   </div>
 </section>
-
-<!-- ======================= ESCOPO ======================= -->
+<!-- ======================= ESCOPO (montado por orcamento.js a partir de precos.js) ======================= -->
 <section class="section pt0" id="escopo">
   <div class="container">
     <div class="section-head">
       <span class="tag reveal">O que vamos criar</span>
-      <h2 class="title reveal">[Nome do serviço].</h2>
-      <p class="lead reveal">[Uma frase explicando o serviço.]</p>
+      <h2 class="title reveal" id="escopoTitulo">O seu projeto.</h2>
+      <p class="lead reveal">Tudo o que está incluso em cada serviço. O que não está na lista não está incluso no valor.</p>
     </div>
-    <article class="offer reveal">
-      <div class="offer-top">
-        <h3>[Nome do serviço]</h3>
-        <span class="offer-price">R$ [valor]</span>
-      </div>
-      <p class="offer-desc">[Descrição curta do que está incluso neste serviço.]</p>
-      <ul class="offer-list">
-        <li>[Item incluso 1]</li>
-        <li>[Item incluso 2]</li>
-        <li>[Item incluso 3]</li>
-        <li>[Item incluso 4]</li>
-      </ul>
-      <p class="offer-note">O que não está nesta lista não está incluso no valor.</p>
-    </article>
+    <div class="offers" id="offers"></div>
   </div>
 </section>
 
@@ -106,24 +92,10 @@
       <span class="tag reveal">Investimento</span>
       <h2 class="title reveal">Valor do projeto e condições.</h2>
     </div>
-    <div class="facts reveal">
-      <div class="fact"><span class="fact-k">Prazo de entrega</span><span class="fact-v">[X dias úteis]</span><span class="fact-s">A partir da aprovação da proposta e da conversa de briefing.</span></div>
-      <div class="fact"><span class="fact-k">Investimento total</span><span class="fact-v">R$ [valor]</span><span class="fact-s">[O que está incluso, em uma frase.]</span></div>
-    </div>
-    <div class="paygrid">
-      <div class="pay pay-hl reveal">
-        <span class="pay-badge">Melhor opção</span>
-        <span class="pay-k">À vista</span>
-        <div class="pay-v"><b>R$ [valor à vista]</b><s>R$ [valor]</s></div>
-        <span class="pay-off">[X]% de desconto</span>
-        <p class="pay-note">Pagamento único na aprovação da proposta.</p>
-      </div>
-      <div class="pay reveal">
-        <span class="pay-k">Parcelado</span>
-        <div class="pay-v"><b>[entrada]</b><span>+ [restante]</span></div>
-        <p class="pay-note">[Condições do parcelamento.]</p>
-      </div>
-    </div>
+    <div class="facts reveal" id="facts"></div>
+    <div class="paygrid" id="paygrid"></div>
+    <p class="pay-extra reveal" id="payExtra"></p>
+    <div class="recurring reveal" id="recurring" hidden></div>
   </div>
 </section>
 
@@ -159,7 +131,7 @@
             <span class="clubcard__chip"></span>
             <div class="clubcard__pct"><strong>10%</strong><span>cashback</span></div>
             <div class="clubcard__bot">
-              <span><i>Membro</i>[Nome do Cliente]</span>
+              <span><i>Membro</i><em class="js-nome">[Nome do Cliente]</em></span>
               <span><i>Válido por</i>2 meses</span>
             </div>
           </div>
@@ -223,7 +195,7 @@
       <div class="rings" aria-hidden="true"><span></span><span></span><span></span></div>
       <span class="tag">Vamos começar?</span>
       <h2 class="title">Tudo pronto para dar o start.</h2>
-      <p class="lead">Projeto completo por <b>R$ [valor]</b> (ou <b>R$ [valor à vista]</b> pagando à vista). É só aprovar que a gente já começa.</p>
+      <p class="lead">Projeto completo por <b id="totalTxt">R$ [valor]</b> (ou <b id="totalPix">R$ [valor à vista]</b> pagando à vista no Pix). É só aprovar que a gente já começa.</p>
       <div class="hero-actions">
         <a class="btn btn-primary" href="https://api.whatsapp.com/send/?phone=%2B5511925045262&amp;text=Ol%C3%A1%2C+quero+aprovar+a+proposta+do+Studio+Kair%C3%B3s&amp;type=phone_number&amp;app_absent=0" target="_blank" rel="noopener">Aprovar proposta <span class="chevron" aria-hidden="true">→</span></a>
         <a class="btn btn-ghost" href="https://api.whatsapp.com/send/?phone=%2B5511925045262&amp;text=Ol%C3%A1%2C+tenho+uma+d%C3%BAvida+sobre+a+proposta&amp;type=phone_number&amp;app_absent=0" target="_blank" rel="noopener">Tirar uma dúvida</a>
@@ -261,6 +233,7 @@
   </div>
 </footer>
 
+<script src="precos.js"></script>
 <script src="orcamento.js"></script>
 </body>
 </html>
