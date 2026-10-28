@@ -178,7 +178,15 @@
         pay(i === 0, i === 0 ? 'Condição combinada' : '', String(p.titulo || '').slice(0, 60), String(p.destaque || '').slice(0, 40), String(p.pequeno || '').slice(0, 40), '', String(p.nota || '').slice(0, 200), p.riscado === true);
       });
       if (grid.children.length === 3) grid.classList.add('paygrid--3');
-      byId('payExtra').textContent = (esp.obs ? String(esp.obs).slice(0, 300) : 'Condição combinada especialmente para você.');
+      // a observação da Gabi vira um destaque dentro do próprio cartão da condição combinada
+      var primeiro = grid.firstElementChild;
+      if (esp.obs && primeiro) {
+        var ob = el('p', 'pay-obs');
+        ob.appendChild(el('b', null, 'Combinado: '));
+        ob.appendChild(document.createTextNode(String(esp.obs).slice(0, 300)));
+        primeiro.appendChild(ob);
+      }
+      byId('payExtra').hidden = true;
       var fechar = document.querySelector('#fechar .lead');
       if (fechar) fechar.textContent = 'Condição combinada especialmente para você. É só aprovar que a gente já começa.';
     } else {
