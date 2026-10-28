@@ -4,7 +4,8 @@
    Códigos dos serviços: social, identidade, landing, site
    ========================================================================== */
 window.PRECOS = {
-  descontoAvista: 5, // % de desconto no Pix à vista (confirmar)
+  descontoAvista: 5, // % de desconto no Pix à vista
+  validadeDias: 7,   // a proposta vale por 7 dias a partir da data de emissão
   servicos: {
     social: {
       nome: 'Social Media',

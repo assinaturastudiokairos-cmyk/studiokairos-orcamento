@@ -2,9 +2,24 @@
   'use strict';
   var reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
-  /* ---------- Data de emissão: preenchida sozinha ---------- */
-  var d = document.getElementById('pData');
-  if (d) d.textContent = new Date().toLocaleDateString('pt-BR', { day: '2-digit', month: 'long', year: 'numeric' });
+  /* ---------- Data de emissão e validade (o CRM manda e=AAAA-MM-DD; sem ela vale o dia de hoje) ---------- */
+  (function () {
+    var dias = (window.PRECOS && window.PRECOS.validadeDias) || 7;
+    var m = /^(\d{4})-(\d{2})-(\d{2})$/.exec(new URLSearchParams(location.search).get('e') || '');
+    var emissao = m ? new Date(+m[1], +m[2] - 1, +m[3]) : new Date();
+    emissao.setHours(0, 0, 0, 0);
+    var valida = new Date(emissao.getTime());
+    valida.setDate(valida.getDate() + dias);
+    var fmt = function (x) { return x.toLocaleDateString('pt-BR', { day: '2-digit', month: 'long', year: 'numeric' }); };
+    var hojeZ = new Date(); hojeZ.setHours(0, 0, 0, 0);
+    var vencida = hojeZ.getTime() > valida.getTime();
+    var e = document.getElementById('pData'), v = document.getElementById('pValida'), c = document.getElementById('closingValid');
+    if (e) e.textContent = fmt(emissao);
+    if (v) { v.textContent = fmt(valida) + (vencida ? ' (expirada)' : ''); if (vencida) v.classList.add('pmeta-late'); }
+    if (c) c.textContent = vencida
+      ? 'Esta proposta expirou em ' + fmt(valida) + '. Fale com a gente para atualizar os valores.'
+      : 'Proposta válida até ' + fmt(valida) + ', para o escopo acima.';
+  })();
 
   /* ---------- Fundo: brilho que segue o mouse (computador) ou o dedo (celular) ---------- */
   var glow = document.getElementById('bgGlow');
