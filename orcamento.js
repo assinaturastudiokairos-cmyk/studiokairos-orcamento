@@ -3,9 +3,9 @@
   var reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
   /* ---------- Data de emissão e validade (o CRM manda e=AAAA-MM-DD; sem ela vale o dia de hoje) ---------- */
-  (function () {
-    var dias = (window.PRECOS && window.PRECOS.validadeDias) || 7;
-    var m = /^(\d{4})-(\d{2})-(\d{2})$/.exec(new URLSearchParams(location.search).get('e') || '');
+  function datas(esp) {
+    var dias = (esp && Number(esp.validadeDias)) || (window.PRECOS && window.PRECOS.validadeDias) || 7;
+    var m = /^(\d{4})-(\d{2})-(\d{2})$/.exec((esp && esp.emissao) || new URLSearchParams(location.search).get('e') || '');
     var emissao = m ? new Date(+m[1], +m[2] - 1, +m[3]) : new Date();
     emissao.setHours(0, 0, 0, 0);
     var valida = new Date(emissao.getTime());
@@ -19,7 +19,7 @@
     if (c) c.textContent = vencida
       ? 'Este orçamento expirou em ' + fmt(valida) + '. Fale com a gente para atualizar os valores.'
       : 'Orçamento válido até ' + fmt(valida) + ', para o escopo acima.';
-  })();
+  }
 
   /* ---------- Fundo: brilho que segue o mouse (computador) ou o dedo (celular) ---------- */
   var glow = document.getElementById('bgGlow');
@@ -68,17 +68,27 @@
   }
 
   /* ---------- Orçamento montado pelo link: ?n=Nome&s=site,identidade (valores vêm de precos.js) ---------- */
-  (function () {
+  // esp = condição especial vinda do CRM (?o=CODIGO); sem ela, monta pelo link normal
+  function renderizar(esp) {
     var P = window.PRECOS;
     if (!P) return;
     var q = new URLSearchParams(location.search);
-    var nome = (q.get('n') || '').trim().slice(0, 60);
-    var cods = (q.get('s') || 'landing').split(',').map(function (c) { return c.trim(); })
-      .filter(function (c, i, a) { return P.servicos[c] && a.indexOf(c) === i; });
-    if (!cods.length) cods = ['landing'];
-    var S = cods.map(function (c) { return P.servicos[c]; });
-
     var money = function (n) { return 'R$ ' + n.toLocaleString('pt-BR', { minimumFractionDigits: n % 1 ? 2 : 0, maximumFractionDigits: 2 }); };
+    var nome = ((esp ? esp.nome : q.get('n')) || '').trim().slice(0, 60), S;
+    if (esp) {
+      S = (esp.itens || []).slice(0, 12).map(function (it) {
+        var valor = Math.max(0, Number(it.valor) || 0), base = P.servicos[it.cod];
+        if (base) return Object.assign({}, base, { total: valor, valorTexto: money(valor), totalNota: '' });
+        return { nome: String(it.nome || 'Serviço').slice(0, 60), desc: String(it.desc || '').slice(0, 200), icone: 'pagina', valorTexto: money(valor), total: valor, prazo: String(it.prazo || 'combinado').slice(0, 30), itens: (it.itens || []).slice(0, 8).map(function (x) { return String(x).slice(0, 120); }) };
+      });
+      if (!S.length) return;
+    } else {
+      var cods = (q.get('s') || 'landing').split(',').map(function (c) { return c.trim(); })
+        .filter(function (c, i, a) { return P.servicos[c] && a.indexOf(c) === i; });
+      if (!cods.length) cods = ['landing'];
+      S = cods.map(function (c) { return P.servicos[c]; });
+    }
+
     var el = function (tag, cls, txt) {
       var e = document.createElement(tag);
       if (cls) e.className = cls;
@@ -100,7 +110,7 @@
     }
 
     var soma = S.reduce(function (t, s) { return t + s.total; }, 0);
-    var cred = Math.max(0, Math.min(Number(q.get("c")) || 0, Math.floor(soma * (P.limiteCredito || 50) / 100))); // crédito do Clube, no máximo 50% do projeto
+    var cred = Math.max(0, Math.min(Number(esp ? esp.credito : q.get("c")) || 0, Math.floor(soma * (P.limiteCredito || 50) / 100))); // crédito do Clube, no máximo 50% do projeto
     soma -= cred;
     var avista = Math.round(soma * (1 - P.descontoAvista / 100));
     var temSocial = S.some(function (s) { return s.mensal; });
@@ -161,20 +171,31 @@
       c.appendChild(el('p', 'pay-note', note));
       grid.appendChild(c);
     };
-    pay(true, 'Melhor opção', 'No Pix, à vista', money(avista), money(soma),
-      P.descontoAvista + '% de desconto · economize ' + money(soma - avista),
-      'Pagamento único na aprovação do orçamento.');
-    if (!temSocial) {
-      pay(false, '', 'No Pix, em 2 vezes', money(soma / 2), '+ ' + money(soma / 2), '',
-        'Metade na entrada e metade na entrega final. O primeiro pagamento é antes de começar.');
+    var pagEsp = esp && Array.isArray(esp.pagamentos) ? esp.pagamentos.slice(0, 4) : [];
+    if (pagEsp.length) {
+      // condição combinada só para este cliente: os cartões vêm prontos do CRM
+      pagEsp.forEach(function (p, i) {
+        pay(i === 0, i === 0 ? 'Condição combinada' : '', String(p.titulo || '').slice(0, 60), String(p.destaque || '').slice(0, 40), String(p.pequeno || '').slice(0, 40), '', String(p.nota || '').slice(0, 200));
+      });
+      if (grid.children.length === 3) grid.classList.add('paygrid--3');
+      byId('payExtra').textContent = (esp.obs ? String(esp.obs).slice(0, 300) : 'Condição combinada especialmente para você.');
+      var fechar = document.querySelector('#fechar .lead');
+      if (fechar) fechar.textContent = 'Condição combinada especialmente para você. É só aprovar que a gente já começa.';
+    } else {
+      pay(true, 'Melhor opção', 'No Pix, à vista', money(avista), money(soma),
+        P.descontoAvista + '% de desconto · economize ' + money(soma - avista),
+        'Pagamento único na aprovação do orçamento.');
+      if (!temSocial) {
+        pay(false, '', 'No Pix, em 2 vezes', money(soma / 2), '+ ' + money(soma / 2), '',
+          'Metade na entrada e metade na entrega final. O primeiro pagamento é antes de começar.');
+      }
+      pay(false, '', 'No cartão', money(cartao), cartaoDefinido ? 'em até 5x sem juros' : '', '',
+        cartaoDefinido ? 'A taxa do cartão já está incluída no valor.' : 'Sem desconto. Parcelado com os juros da maquininha do seu cartão.');
+      if (grid.children.length === 3) grid.classList.add('paygrid--3');
+      byId('payExtra').textContent = 'Pagamento por Pix ou cartão, com a taxa do cartão repassada.';
+      byId('totalTxt').textContent = money(soma);
+      byId('totalPix').textContent = money(avista);
     }
-    pay(false, '', 'No cartão', money(cartao), cartaoDefinido ? 'em até 5x sem juros' : '', '',
-      cartaoDefinido ? 'A taxa do cartão já está incluída no valor.' : 'Sem desconto. Parcelado com os juros da maquininha do seu cartão.');
-    if (grid.children.length === 3) grid.classList.add('paygrid--3');
-    byId('payExtra').textContent = 'Pagamento por Pix ou cartão, com a taxa do cartão repassada.';
-
-    byId('totalTxt').textContent = money(soma);
-    byId('totalPix').textContent = money(avista);
 
     var host = S.filter(function (s) { return s.hospedagem; });
     if (host.length) {
@@ -197,7 +218,7 @@
       rows.appendChild(m);
       r.appendChild(rows);
     }
-  })();
+  }
 
   /* ---------- Link "Início" na barra: só aparece depois da capa, ao chegar nos clientes ---------- */
   (function () {
@@ -225,15 +246,36 @@
   })();
 
   /* ---------- Animação ao rolar ---------- */
-  var els = document.querySelectorAll('.reveal');
-  if (!('IntersectionObserver' in window)) {
-    els.forEach(function (x) { x.classList.add('in'); });
-  } else {
-    var io = new IntersectionObserver(function (entries) {
-      entries.forEach(function (en) {
-        if (en.isIntersecting) { en.target.classList.add('in'); io.unobserve(en.target); }
+  function revelar() {
+    var els = document.querySelectorAll('.reveal');
+    if (!('IntersectionObserver' in window)) {
+      els.forEach(function (x) { x.classList.add('in'); });
+    } else {
+      var io = new IntersectionObserver(function (entries) {
+        entries.forEach(function (en) {
+          if (en.isIntersecting) { en.target.classList.add('in'); io.unobserve(en.target); }
+        });
+      }, { rootMargin: '0px 0px -8% 0px', threshold: 0.08 });
+      els.forEach(function (x, i) { x.style.setProperty('--d', ((i % 3) * 80) + 'ms'); io.observe(x); });
+    }
+  }
+
+  /* ---------- Começo: com ?o=CODIGO busca a condição especial no CRM; sem ele, monta direto ---------- */
+  var CRM_API = 'https://crm-studio-kairos.vercel.app/api/orcamento/ver?c=';
+  function comecar(esp) { datas(esp); renderizar(esp); revelar(); }
+  var codigo = new URLSearchParams(location.search).get('o');
+  if (codigo && /^[a-z0-9]{10,24}$/i.test(codigo)) {
+    fetch(CRM_API + encodeURIComponent(codigo), { cache: 'no-store' })
+      .then(function (r) { if (!r.ok) throw new Error('nao_encontrado'); return r.json(); })
+      .then(function (esp) { comecar(esp); })
+      .catch(function () {
+        var h = document.querySelector('.phead-inner h1');
+        if (h) h.textContent = 'Este orçamento não está disponível.';
+        var l = document.querySelector('.phead-inner .lead');
+        if (l) l.textContent = 'O link pode estar incorreto ou ter expirado. Fale com a gente pelo WhatsApp.';
+        document.querySelectorAll('main > section:not(.phead)').forEach(function (s) { s.hidden = true; });
       });
-    }, { rootMargin: '0px 0px -8% 0px', threshold: 0.08 });
-    els.forEach(function (x, i) { x.style.setProperty('--d', ((i % 3) * 80) + 'ms'); io.observe(x); });
+  } else {
+    comecar(null);
   }
 })();
