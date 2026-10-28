@@ -422,5 +422,6 @@
 .nav.show-home .nav-home { display: inline-block; animation: fadeSoft .4s ease both; }
 @media (min-width: 861px) { .nav.show-home .nav-home { display: none; } }
 
-/* Título de "Nossos clientes": quebra em duas linhas no computador, sem esticar a tela toda */
-#clientes .title { max-width: 24ch; text-wrap: balance; }
+/* Nossos clientes: título em uma linha e o subtítulo acompanha a largura dele, sem palavra sozinha */
+#clientes .title { max-width: none; }
+#clientes .lead { max-width: none; text-wrap: balance; }
