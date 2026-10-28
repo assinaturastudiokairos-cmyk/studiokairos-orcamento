@@ -71,6 +71,13 @@
       return e;
     };
     var byId = function (id) { return document.getElementById(id); };
+    var ICONES = {
+      pagina: '<svg viewBox="0 0 24 24"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M3 9h18"/><path d="M8 14h5"/><path d="M8 17h8"/></svg>',
+      site: '<svg viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="16" rx="2"/><path d="M3 9h18"/><path d="M9 9v11"/></svg>',
+      marca: '<svg viewBox="0 0 24 24"><path d="M12 3l2.6 5.6 6.1.7-4.5 4.2 1.2 6L12 16.5 6.6 19.5l1.2-6L3.3 9.3l6.1-.7z"/></svg>',
+      posts: '<svg viewBox="0 0 24 24"><rect x="3" y="3" width="8" height="8" rx="1.5"/><rect x="13" y="3" width="8" height="8" rx="1.5"/><rect x="3" y="13" width="8" height="8" rx="1.5"/><rect x="13" y="13" width="8" height="8" rx="1.5"/></svg>',
+      check: '<svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>'
+    };
 
     if (nome) {
       document.querySelectorAll('.js-nome').forEach(function (x) { x.textContent = nome; });
@@ -89,15 +96,27 @@
     S.forEach(function (s) {
       var a = el('article', 'offer reveal');
       var top = el('div', 'offer-top');
-      top.appendChild(el('h3', null, s.nome));
+      var ico = el('span', 'offer-ico');
+      ico.setAttribute('aria-hidden', 'true');
+      ico.innerHTML = ICONES[s.icone] || ICONES.pagina; // ícones fixos do código, sem texto vindo do link
+      top.appendChild(ico);
       top.appendChild(el('span', 'offer-price', s.valorTexto));
       a.appendChild(top);
+      a.appendChild(el('h3', 'offer-name', s.nome));
       a.appendChild(el('p', 'offer-desc', s.desc));
       var ul = el('ul', 'offer-list');
       s.itens.forEach(function (i) { ul.appendChild(el('li', null, i)); });
       a.appendChild(ul);
       a.appendChild(el('p', 'offer-chip', 'Prazo de entrega: ' + s.prazo + ' úteis'));
-      s.notas.forEach(function (n) { a.appendChild(el('p', 'offer-note', n)); });
+      if (s.destaque) {
+        var hl = el('p', 'offer-hl');
+        var ck = el('span', 'offer-hl-ico');
+        ck.setAttribute('aria-hidden', 'true');
+        ck.innerHTML = ICONES.check;
+        hl.appendChild(ck);
+        hl.appendChild(el('span', null, s.destaque));
+        a.appendChild(hl);
+      }
       offers.appendChild(a);
     });
 

@@ -8,6 +8,7 @@ window.PRECOS = {
   servicos: {
     social: {
       nome: 'Social Media',
+      icone: 'posts',
       desc: 'Design, copy e postagem feitos pelo Studio Kairós, todo mês.',
       valorTexto: 'R$ 1.500 por mês',
       total: 4500,           // 3 meses (contrato mínimo)
@@ -16,13 +17,13 @@ window.PRECOS = {
       mensal: true,
       itens: [
         '12 posts por mês, entre posts, carrosséis e stories',
-        'Design, copy e postagem feitos por nós',
-        'Contrato mínimo de 3 meses'
+        'Design, copy e postagem feitos por nós'
       ],
-      notas: []
+      destaque: 'Contrato mínimo de 3 meses. Pagando os 3 meses à vista no Pix, você tem 5% de desconto.'
     },
     identidade: {
       nome: 'Identidade visual',
+      icone: 'marca',
       desc: 'A essência do seu negócio traduzida em logo, cores e tipografia.',
       valorTexto: 'R$ 1.200',
       total: 1200,
@@ -33,10 +34,11 @@ window.PRECOS = {
         '3 posts',
         'Logos em PNG, PDF e SVG'
       ],
-      notas: ['2 rodadas de ajuste antes de aprovar. Depois de aprovada, não há alterações.']
+      destaque: '2 rodadas de ajuste antes de aprovar. Depois de aprovada, não há alterações.'
     },
     landing: {
       nome: 'Landing page',
+      icone: 'pagina',
       desc: 'Uma página única, feita para transformar visita em contato ou venda.',
       valorTexto: 'R$ 1.700',
       total: 1700,
@@ -49,10 +51,11 @@ window.PRECOS = {
         'Copy, design e implementação',
         'Hospedagem obrigatória: R$ 97 por mês (1 mês grátis)'
       ],
-      notas: ['2 rodadas de ajuste. A partir da terceira, R$ 250 por rodada.']
+      destaque: '2 rodadas de ajuste. A partir da terceira, R$ 250 por rodada.'
     },
     site: {
       nome: 'Site institucional',
+      icone: 'site',
       desc: 'Uma página principal com subpáginas, para apresentar o seu negócio com autoridade.',
       valorTexto: 'R$ 2.900',
       total: 2900,
@@ -65,7 +68,7 @@ window.PRECOS = {
         'Copy, design e implementação',
         'Hospedagem obrigatória: R$ 147 por mês (1 mês grátis)'
       ],
-      notas: ['2 rodadas de ajuste. A partir da terceira, R$ 250 por rodada.']
+      destaque: '2 rodadas de ajuste. A partir da terceira, R$ 250 por rodada.'
     }
   },
   manutencao: {
