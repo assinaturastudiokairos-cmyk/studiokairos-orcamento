@@ -182,6 +182,19 @@
     }
   })();
 
+  /* ---------- Link "Início" na barra: só aparece depois da capa, ao chegar nos clientes ---------- */
+  (function () {
+    var nav = document.querySelector('.nav');
+    var alvo = document.getElementById('clientes');
+    if (!nav || !alvo) return;
+    var atualiza = function () {
+      nav.classList.toggle('show-home', alvo.getBoundingClientRect().top <= window.innerHeight * 0.5);
+    };
+    atualiza();
+    window.addEventListener('scroll', atualiza, { passive: true });
+    window.addEventListener('resize', atualiza);
+  })();
+
   /* ---------- Faixa de logos: duplica a lista para a esteira girar sem emenda ---------- */
   (function () {
     var track = document.querySelector('.logos-track');

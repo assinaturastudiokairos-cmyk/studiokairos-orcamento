@@ -408,7 +408,7 @@
 @media (max-width: 640px) { .logo-item { width: 190px; height: 96px; padding: 14px 18px; } .logo-item img { max-width: 140px; max-height: 50px; } }
 
 /* Link Início na barra de topo (voltar ao começo) */
-.nav-home { color: var(--muted); font-size: 1rem; padding: 8px 14px; border-radius: var(--r-pill); transition: color .2s, background .2s; }
+.nav-home { display: none; color: var(--muted); font-size: 1rem; padding: 8px 14px; border-radius: var(--r-pill); transition: color .2s, background .2s; }
 .nav-home:hover { color: var(--text); background: rgba(254,254,254,.06); }
 @media (max-width: 640px) { .nav-home { padding: 8px 10px; font-size: .95rem; } }
 
@@ -419,3 +419,4 @@
   .js .reveal.in { transition-delay: var(--d, 0ms) !important; }
   .phead-inner > * { animation: fadeSoft .8s ease both !important; }
 }
+.nav.show-home .nav-home { display: inline-block; animation: fadeSoft .4s ease both; }
