@@ -17,8 +17,8 @@
     if (e) e.textContent = fmt(emissao);
     if (v) { v.textContent = fmt(valida) + (vencida ? ' (expirada)' : ''); if (vencida) v.classList.add('pmeta-late'); }
     if (c) c.textContent = vencida
-      ? 'Esta proposta expirou em ' + fmt(valida) + '. Fale com a gente para atualizar os valores.'
-      : 'Proposta válida até ' + fmt(valida) + ', para o escopo acima.';
+      ? 'Este orçamento expirou em ' + fmt(valida) + '. Fale com a gente para atualizar os valores.'
+      : 'Orçamento válido até ' + fmt(valida) + ', para o escopo acima.';
   })();
 
   /* ---------- Fundo: brilho que segue o mouse (computador) ou o dedo (celular) ---------- */
@@ -96,7 +96,7 @@
 
     if (nome) {
       document.querySelectorAll('.js-nome').forEach(function (x) { x.textContent = nome; });
-      document.title = 'Proposta · ' + nome + ' · Studio Kairós';
+      document.title = 'Orçamento · ' + nome + ' · Studio Kairós';
     }
 
     var soma = S.reduce(function (t, s) { return t + s.total; }, 0);
@@ -141,7 +141,7 @@
     var f1 = el('div', 'fact');
     f1.appendChild(el('span', 'fact-k', 'Prazo de entrega'));
     f1.appendChild(el('span', 'fact-v', S.length === 1 ? S[0].prazo + ' dias úteis' : 'Conforme cada serviço'));
-    f1.appendChild(el('span', 'fact-s', S.length === 1 ? 'A partir da aprovação da proposta e da conversa de briefing.' : 'Cada serviço tem o seu prazo, indicado acima.'));
+    f1.appendChild(el('span', 'fact-s', S.length === 1 ? 'A partir da aprovação do orçamento e da conversa de briefing.' : 'Cada serviço tem o seu prazo, indicado acima.'));
     var f2 = el('div', 'fact');
     f2.appendChild(el('span', 'fact-k', 'Investimento total'));
     f2.appendChild(el('span', 'fact-v', money(soma)));
@@ -163,7 +163,7 @@
     };
     pay(true, 'Melhor opção', 'No Pix, à vista', money(avista), money(soma),
       P.descontoAvista + '% de desconto · economize ' + money(soma - avista),
-      'Pagamento único na aprovação da proposta.');
+      'Pagamento único na aprovação do orçamento.');
     if (!temSocial) {
       pay(false, '', 'No Pix, em 2 vezes', money(soma / 2), '+ ' + money(soma / 2), '',
         'Metade na entrada e metade na entrega final. O primeiro pagamento é antes de começar.');
