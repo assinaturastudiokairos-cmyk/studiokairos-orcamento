@@ -405,3 +405,16 @@
   .logos-track { animation: none; }
 }
 @media (max-width: 640px) { .logo-item { width: 190px; height: 96px; padding: 14px 18px; } .logo-item img { max-width: 140px; max-height: 50px; } }
+
+/* Link Início na barra de topo (voltar ao começo) */
+.nav-home { color: var(--muted); font-size: 1rem; padding: 8px 14px; border-radius: var(--r-pill); transition: color .2s, background .2s; }
+.nav-home:hover { color: var(--text); background: rgba(254,254,254,.06); }
+@media (max-width: 640px) { .nav-home { padding: 8px 10px; font-size: .95rem; } }
+
+/* Movimento reduzido (muito comum em celular): sem deslocamento, mas mantém o esmaecer suave */
+@keyframes fadeSoft { from { opacity: 0; } to { opacity: 1; } }
+@media (prefers-reduced-motion: reduce) {
+  .js .reveal, .js .reveal.up { transform: none !important; transition: opacity .6s ease !important; }
+  .js .reveal.in { transition-delay: var(--d, 0ms) !important; }
+  .phead-inner > * { animation: fadeSoft .8s ease both !important; }
+}

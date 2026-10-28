@@ -196,7 +196,7 @@
 
   /* ---------- Animação ao rolar ---------- */
   var els = document.querySelectorAll('.reveal');
-  if (!('IntersectionObserver' in window) || reduce) {
+  if (!('IntersectionObserver' in window)) {
     els.forEach(function (x) { x.classList.add('in'); });
   } else {
     var io = new IntersectionObserver(function (entries) {
