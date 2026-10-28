@@ -155,7 +155,7 @@
     var facts = byId('facts');
     var f1 = el('div', 'fact');
     f1.appendChild(el('span', 'fact-k', 'Prazo de entrega'));
-    f1.appendChild(el('span', 'fact-v', S.length === 1 ? S[0].prazo + ' dias úteis' : 'Conforme cada serviço'));
+    f1.appendChild(el('span', 'fact-v', S.length === 1 ? S[0].prazo + ' úteis' : 'Conforme cada serviço'));
     f1.appendChild(el('span', 'fact-s', S.length === 1 ? 'A partir da aprovação do orçamento e da conversa de briefing.' : 'Cada serviço tem o seu prazo, indicado acima.'));
     var f2 = el('div', 'fact');
     if (soloSocial) {
