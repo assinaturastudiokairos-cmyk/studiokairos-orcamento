@@ -5,6 +5,7 @@
    ========================================================================== */
 window.PRECOS = {
   descontoAvista: 5, // % de desconto no Pix à vista
+  limiteCredito: 50, // o crédito do Clube cobre no máximo 50% do projeto
   validadeDias: 7,   // a proposta vale por 7 dias a partir da data de emissão
   servicos: {
     social: {

@@ -100,10 +100,12 @@
     }
 
     var soma = S.reduce(function (t, s) { return t + s.total; }, 0);
+    var cred = Math.max(0, Math.min(Number(q.get("c")) || 0, Math.floor(soma * (P.limiteCredito || 50) / 100))); // crédito do Clube, no máximo 50% do projeto
+    soma -= cred;
     var avista = Math.round(soma * (1 - P.descontoAvista / 100));
     var temSocial = S.some(function (s) { return s.mensal; });
     var cartaoDefinido = S.every(function (s) { return s.cartao; });
-    var cartao = S.reduce(function (t, s) { return t + (s.cartao || s.total); }, 0);
+    var cartao = S.reduce(function (t, s) { return t + (s.cartao || s.total); }, 0) - cred;
 
     byId('escopoTitulo').textContent = S.length === 1 ? S[0].nome + '.' : 'Os seus serviços.';
 
@@ -143,7 +145,7 @@
     var f2 = el('div', 'fact');
     f2.appendChild(el('span', 'fact-k', 'Investimento total'));
     f2.appendChild(el('span', 'fact-v', money(soma)));
-    f2.appendChild(el('span', 'fact-s', S.map(function (s) { return s.nome + (s.totalNota ? ' (' + s.totalNota + ')' : ''); }).join(' + ')));
+    f2.appendChild(el('span', 'fact-s', S.map(function (s) { return s.nome + (s.totalNota ? ' (' + s.totalNota + ')' : ''); }).join(' + ') + (cred ? ' · já com o crédito do Clube de ' + money(cred) + ' descontado' : '')));
     facts.appendChild(f1); facts.appendChild(f2);
 
     var grid = byId('paygrid');
