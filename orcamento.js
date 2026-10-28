@@ -206,8 +206,10 @@
       var mesPix = Math.round(mes * (1 - P.descontoAvista / 100));
       pay(false, '', 'Mês a mês', money(mesPix), 'no 1º mês, no Pix', P.descontoAvista + '% de desconto no primeiro pagamento no Pix',
         'Nos outros meses: ' + money(mes) + ' por mês. Pagamento no Pix ou cartão, antes de cada mês começar. A taxa do cartão é repassada.');
+      var desc3 = P.descontoSocial3Meses || 0; // nos 3 meses à vista o desconto é em reais, não em porcentagem
+      avista = soma - desc3;
       pay(true, 'Melhor opção', '3 meses à vista, no Pix', money(avista), money(soma),
-        P.descontoAvista + '% de desconto · economize ' + money(soma - avista),
+        money(desc3) + ' de desconto · economize ' + money(desc3),
         'Pagamento único na aprovação do orçamento. Cobre os 3 meses do contrato.', true);
       byId('payExtra').hidden = true; // não repete o que os cartões já dizem
       var fecharS = document.querySelector('#fechar .lead');
@@ -223,7 +225,7 @@
       pay(false, '', 'No cartão', money(cartao), cartaoDefinido ? 'em até 5x sem juros' : '', '',
         cartaoDefinido ? 'A taxa do cartão já está incluída no valor.' : 'Sem desconto. Parcelado com os juros da maquininha do seu cartão.');
       if (grid.children.length === 3) grid.classList.add('paygrid--3');
-      byId('payExtra').textContent = 'Pagamento por Pix ou cartão, com a taxa do cartão repassada.' + (recS.length ? ' O Social Media é à parte: ' + money(recS[0].total / 3) + ' por mês, ou ' + money(Math.round(recS[0].total * (1 - P.descontoAvista / 100))) + ' pagando os 3 meses à vista no Pix.' : '');
+      byId('payExtra').textContent = 'Pagamento por Pix ou cartão, com a taxa do cartão repassada.' + (recS.length ? ' O Social Media é à parte: ' + money(recS[0].total / 3) + ' por mês, ou ' + money(recS[0].total - (P.descontoSocial3Meses || 0)) + ' pagando os 3 meses à vista no Pix.' : '');
       byId('totalTxt').textContent = money(soma);
       byId('totalPix').textContent = money(avista);
     }

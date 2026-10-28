@@ -5,6 +5,7 @@
    ========================================================================== */
 window.PRECOS = {
   descontoAvista: 5, // % de desconto no Pix à vista
+  descontoSocial3Meses: 350, // Social Media: desconto em reais para quem paga os 3 meses à vista no Pix
   limiteCredito: 50, // o crédito do Clube cobre no máximo 50% do projeto
   validadeDias: 7,   // o orçamento vale por 7 dias a partir da data de emissão
   servicos: {
@@ -21,7 +22,7 @@ window.PRECOS = {
         '12 posts por mês, entre posts, carrosséis e stories',
         'Design, copy e postagem feitos por nós'
       ],
-      destaque: 'Contrato mínimo de 3 meses. Pagando os 3 meses à vista no Pix, você tem 5% de desconto.'
+      destaque: 'Contrato mínimo de 3 meses. Pagando os 3 meses à vista no Pix, você tem R$ 350 de desconto.'
     },
     identidade: {
       nome: 'Identidade visual',
