@@ -143,10 +143,75 @@
         </ul>
       </div>
       <div class="club-card" aria-hidden="true">
-        <img src="logo-studiokairos-branco.png" alt="" width="34" height="50">
-        <div class="club-pct"><strong>10%</strong><span>cashback</span></div>
-        <div class="club-bot"><span><i>Membro</i>[Nome do Cliente]</span><span><i>Válido por</i>2 meses</span></div>
+        <div class="clubdeck">
+          <span class="clubfan"></span>
+          <span class="clubfan"></span>
+          <span class="clubfan"></span>
+          <span class="clubfan"></span>
+          <span class="clubfan"></span>
+          <span class="clubfan"></span>
+          <div class="clubcard">
+            <span class="clubcard__sheen"></span>
+            <div class="clubcard__top">
+              <img src="logo-studiokairos-branco.png" alt="" width="18" height="26">
+              <span>Clube Studio Kairós</span>
+            </div>
+            <span class="clubcard__chip"></span>
+            <div class="clubcard__pct"><strong>10%</strong><span>cashback</span></div>
+            <div class="clubcard__bot">
+              <span><i>Membro</i>[Nome do Cliente]</span>
+              <span><i>Válido por</i>2 meses</span>
+            </div>
+          </div>
+        </div>
       </div>
+    </div>
+
+    <!-- Regras do crédito: simples e com exemplo. EDITE o limite (50%) aqui e no exemplo, se mudar. -->
+    <div class="rules reveal">
+      <div class="rules-head">
+        <span class="tag">Como usar o seu crédito</span>
+        <h3 class="rules-title">Simples, justo e sem pegadinha.</h3>
+      </div>
+      <ul class="rules-steps">
+        <li class="rstep">
+          <span class="rstep-ico" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M20 8.5V7a2 2 0 0 0-2-2H6a2 2 0 0 0-2 2v10a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-1.5"/><path d="M21 9.5h-4.5a2.5 2.5 0 0 0 0 5H21z"/></svg></span>
+          <b>10% de volta</b>
+          <p>em cada projeto fechado, para usar em novos serviços.</p>
+        </li>
+        <li class="rstep">
+          <span class="rstep-ico" aria-hidden="true"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="8.5"/><path d="M12 7.5V12l3 2"/></svg></span>
+          <b>2 meses para usar</b>
+          <p>contados a partir do fechamento do projeto.</p>
+        </li>
+        <li class="rstep">
+          <span class="rstep-ico" aria-hidden="true"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="8.5"/><path d="M12 3.5v17"/><path d="M12 12h8.5"/></svg></span>
+          <b>Cobre até 50%</b>
+          <p>do valor de um novo projeto. O restante você paga normalmente.</p>
+        </li>
+        <li class="rstep">
+          <span class="rstep-ico" aria-hidden="true"><svg viewBox="0 0 24 24"><rect x="5" y="11" width="14" height="9" rx="2"/><path d="M8 11V8a4 4 0 0 1 8 0v3"/></svg></span>
+          <b>O que sobrar não se perde</b>
+          <p>continua guardado até o vencimento do crédito.</p>
+        </li>
+      </ul>
+
+      <div class="rex">
+        <div class="rex-top">
+          <span class="rex-label">Exemplo</span>
+          <p>Você tem <b>R$ 300</b> de crédito e faz um novo projeto de <b>R$ 200</b>.</p>
+        </div>
+        <div class="rex-bar" role="img" aria-label="Do projeto de R$ 200, R$ 100 são pagos com crédito e R$ 100 você paga">
+          <span class="rex-a">Crédito <b>R$ 100</b></span>
+          <span class="rex-b">Você paga <b>R$ 100</b></span>
+        </div>
+        <div class="rex-keep">
+          <svg viewBox="0 0 24 24" aria-hidden="true"><rect x="5" y="11" width="14" height="9" rx="2"/><path d="M8 11V8a4 4 0 0 1 8 0v3"/></svg>
+          <span><b>R$ 200</b> de crédito continuam guardados até o vencimento.</span>
+        </div>
+      </div>
+
+      <p class="rules-foot">O crédito não é devolvido em dinheiro, e o novo cashback de 10% vale sobre o que você pagou.</p>
     </div>
   </div>
 </section>
@@ -155,11 +220,12 @@
 <section class="section pt0" id="fechar">
   <div class="container">
     <div class="closing reveal">
+      <div class="rings" aria-hidden="true"><span></span><span></span><span></span></div>
       <span class="tag">Vamos começar?</span>
       <h2 class="title">Tudo pronto para dar o start.</h2>
-      <p class="lead">Projeto completo por <b>R$ [valor]</b> (ou <b>R$ [valor à vista]</b> à vista). É só aprovar que a gente já começa.</p>
+      <p class="lead">Projeto completo por <b>R$ [valor]</b> (ou <b>R$ [valor à vista]</b> pagando à vista). É só aprovar que a gente já começa.</p>
       <div class="hero-actions">
-        <a class="btn btn-primary" href="https://api.whatsapp.com/send/?phone=%2B5511925045262&amp;text=Ol%C3%A1%2C+quero+aprovar+a+proposta+do+Studio+Kair%C3%B3s&amp;type=phone_number&amp;app_absent=0" target="_blank" rel="noopener">Aprovar proposta</a>
+        <a class="btn btn-primary" href="https://api.whatsapp.com/send/?phone=%2B5511925045262&amp;text=Ol%C3%A1%2C+quero+aprovar+a+proposta+do+Studio+Kair%C3%B3s&amp;type=phone_number&amp;app_absent=0" target="_blank" rel="noopener">Aprovar proposta <span class="chevron" aria-hidden="true">→</span></a>
         <a class="btn btn-ghost" href="https://api.whatsapp.com/send/?phone=%2B5511925045262&amp;text=Ol%C3%A1%2C+tenho+uma+d%C3%BAvida+sobre+a+proposta&amp;type=phone_number&amp;app_absent=0" target="_blank" rel="noopener">Tirar uma dúvida</a>
       </div>
       <p class="closing-valid">Valores válidos para o escopo acima.</p>
