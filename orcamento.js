@@ -216,14 +216,16 @@
       pay(true, 'Melhor opção', 'No Pix, à vista', money(avista), money(soma),
         P.descontoAvista + '% de desconto · economize ' + money(soma - avista),
         'Pagamento único na aprovação do orçamento.', true);
-      if (!temSocial) {
+      // Pix em 2 vezes: a identidade visual não tem por padrão; o CRM pode liberar ou bloquear (d2=1 ou d2=0)
+      var d2 = q.get('d2'), semDuasVezes = d2 === '0' || (d2 !== '1' && projS.some(function (s) { return s.semPixEmDuasVezes; }));
+      if (!temSocial && !semDuasVezes) {
         pay(false, '', 'No Pix, em 2 vezes', money(soma / 2), '+ ' + money(soma / 2), '',
           'Metade na entrada e metade na entrega final. O primeiro pagamento é antes de começar.');
       }
       pay(false, '', 'No cartão', money(cartao), cartaoDefinido ? 'em até 5x sem juros' : '', '',
         cartaoDefinido ? 'A taxa do cartão já está incluída no valor.' : 'Sem desconto. Parcelado com os juros da maquininha do seu cartão.');
       if (grid.children.length === 3) grid.classList.add('paygrid--3');
-      byId('payExtra').textContent = 'Pagamento por Pix ou cartão, com a taxa do cartão repassada.' + (recS.length ? ' O Social Media é à parte: ' + money(recS[0].total / 3) + ' por mês, ou ' + money(Math.round(recS[0].total * (1 - P.descontoAvista / 100))) + ' pagando os 3 meses à vista no Pix.' : '');
+      byId('payExtra').textContent = (semDuasVezes ? 'Este orçamento é pago antes de começar: no Pix à vista ou parcelado no cartão, com a taxa do cartão repassada.' : 'Pagamento por Pix ou cartão, com a taxa do cartão repassada.') + (recS.length ? ' O Social Media é à parte: ' + money(recS[0].total / 3) + ' por mês, ou ' + money(Math.round(recS[0].total * (1 - P.descontoAvista / 100))) + ' pagando os 3 meses à vista no Pix.' : '');
       byId('totalTxt').textContent = money(soma);
       byId('totalPix').textContent = money(avista);
     }

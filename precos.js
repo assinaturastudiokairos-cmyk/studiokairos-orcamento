@@ -25,6 +25,7 @@ window.PRECOS = {
     },
     identidade: {
       nome: 'Identidade visual',
+      semPixEmDuasVezes: true, // trabalho grande: só Pix à vista ou cartão
       icone: 'marca',
       desc: 'A essência do seu negócio traduzida em logo, cores e tipografia.',
       valorTexto: 'R$ 1.200',
