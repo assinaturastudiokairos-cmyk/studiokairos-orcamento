@@ -241,7 +241,7 @@
       var r = byId('recurring');
       r.hidden = false;
       r.appendChild(el('h3', 'recurring-title', 'Depois que o projeto estiver no ar'));
-      var rows = el('div', 'recurring-grid');
+      var rows = el('div', 'recurring-grid' + (host.length === 1 ? ' recurring-um' : ''));
       host.forEach(function (s) {
         var c = el('div', 'rec');
         c.appendChild(el('span', 'rec-k', 'Hospedagem · ' + s.nome));
