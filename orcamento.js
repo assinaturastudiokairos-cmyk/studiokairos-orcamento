@@ -101,6 +101,7 @@
       site: '<svg viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="16" rx="2"/><path d="M3 9h18"/><path d="M9 9v11"/></svg>',
       marca: '<svg viewBox="0 0 24 24"><path d="M12 3l2.6 5.6 6.1.7-4.5 4.2 1.2 6L12 16.5 6.6 19.5l1.2-6L3.3 9.3l6.1-.7z"/></svg>',
       posts: '<svg viewBox="0 0 24 24"><rect x="3" y="3" width="8" height="8" rx="1.5"/><rect x="13" y="3" width="8" height="8" rx="1.5"/><rect x="3" y="13" width="8" height="8" rx="1.5"/><rect x="13" y="13" width="8" height="8" rx="1.5"/></svg>',
+      slides: '<svg viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="12" rx="2"/><path d="M8 20h8M12 16v4"/></svg>',
       check: '<svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>'
     };
 
@@ -139,7 +140,7 @@
       var ul = el('ul', 'offer-list');
       s.itens.forEach(function (i) { ul.appendChild(el('li', null, i)); });
       a.appendChild(ul);
-      a.appendChild(el('p', 'offer-chip', 'Prazo de entrega: ' + s.prazo + ' úteis'));
+      a.appendChild(el('p', 'offer-chip', 'Prazo de entrega: ' + s.prazo + (/combinar/.test(s.prazo) ? '' : ' úteis')));
       if (s.destaque) {
         var hl = el('p', 'offer-hl');
         var ck = el('span', 'offer-hl-ico');
@@ -155,7 +156,7 @@
     var facts = byId('facts');
     var f1 = el('div', 'fact');
     f1.appendChild(el('span', 'fact-k', 'Prazo de entrega'));
-    f1.appendChild(el('span', 'fact-v', S.length === 1 ? S[0].prazo + ' úteis' : 'Conforme cada serviço'));
+    f1.appendChild(el('span', 'fact-v', S.length === 1 ? S[0].prazo + (/combinar/.test(S[0].prazo) ? '' : ' úteis') : 'Conforme cada serviço'));
     f1.appendChild(el('span', 'fact-s', S.length === 1 ? 'A partir da aprovação do orçamento e da conversa de briefing.' : 'Cada serviço tem o seu prazo, indicado acima.'));
     var f2 = el('div', 'fact');
     if (soloSocial) {
