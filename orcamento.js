@@ -118,7 +118,10 @@
     var soma = base.reduce(function (t, s) { return t + s.total; }, 0);
     var cred = Math.max(0, Math.min(Number(esp ? esp.credito : q.get("c")) || 0, Math.floor(soma * (P.limiteCredito || 50) / 100))); // crédito do Clube, no máximo 50% do projeto
     soma -= cred;
-    var avista = Math.round(soma * (1 - P.descontoAvista / 100));
+    // desconto de 5% no Pix à vista só vale para landing page e site (identidade, logo e design de posts pagam o preço cheio)
+    var semDesc = base.filter(function (s) { return s.semDesconto; }).reduce(function (t, s) { return t + s.total; }, 0);
+    var todosComDesc = base.every(function (s) { return !s.semDesconto; });
+    var avista = Math.round((soma - semDesc) * (1 - P.descontoAvista / 100)) + semDesc;
     var temSocial = false;
     var cartaoDefinido = base.every(function (s) { return s.cartao; });
     var cartao = base.reduce(function (t, s) { return t + (s.cartao || s.total); }, 0) - cred;
@@ -157,7 +160,7 @@
     var f1 = el('div', 'fact');
     f1.appendChild(el('span', 'fact-k', 'Prazo de entrega'));
     f1.appendChild(el('span', 'fact-v', S.length === 1 ? S[0].prazo + (/combinar/.test(S[0].prazo) ? '' : ' úteis') : 'Conforme cada serviço'));
-    f1.appendChild(el('span', 'fact-s', S.length === 1 ? 'A partir da aprovação do orçamento e da conversa de briefing.' : 'Cada serviço tem o seu prazo, indicado acima.'));
+    f1.appendChild(el('span', 'fact-s', S.length === 1 ? (/combinar/.test(S[0].prazo) ? '' : 'A partir da aprovação do orçamento e da conversa de briefing.') : 'Cada serviço tem o seu prazo, indicado acima.'));
     var f2 = el('div', 'fact');
     if (soloSocial) {
       // só Social Media: mostra o valor do mês, não o total do contrato
@@ -181,7 +184,7 @@
       if (small) v.appendChild(el(riscar ? 's' : 'span', null, small)); // só o preço antigo do desconto à vista fica riscado
       c.appendChild(v);
       if (off) c.appendChild(el('span', 'pay-off', off));
-      c.appendChild(el('p', 'pay-note', note));
+      if (note) c.appendChild(el('p', 'pay-note', note));
       grid.appendChild(c);
     };
     var pagEsp = esp && Array.isArray(esp.pagamentos) ? esp.pagamentos.slice(0, 4) : [];
@@ -206,7 +209,7 @@
       var mes = recS[0].total / 3;
       var mesPix = Math.round(mes * (1 - P.descontoAvista / 100));
       pay(false, '', 'Mês a mês', money(mesPix), 'no 1º mês, no Pix', P.descontoAvista + '% de desconto no primeiro pagamento no Pix',
-        'Nos outros meses: ' + money(mes) + ' por mês. Pagamento no Pix ou cartão, antes de cada mês começar. A taxa do cartão é repassada.');
+        'Nos outros meses: ' + money(mes) + ' por mês.');
       pay(true, 'Melhor opção', '3 meses à vista, no Pix', money(avista), money(soma),
         P.descontoAvista + '% de desconto · economize ' + money(soma - avista),
         'Pagamento único na aprovação do orçamento. Cobre os 3 meses do contrato.', true);
@@ -214,19 +217,21 @@
       var fecharS = document.querySelector('#fechar .lead');
       if (fecharS) fecharS.textContent = 'Social Media por ' + money(mes) + ' por mês (com ' + P.descontoAvista + '% de desconto no primeiro pagamento no Pix), contrato mínimo de 3 meses. Ou ' + money(avista) + ' pagando os 3 meses à vista no Pix. É só aprovar que a gente já começa.';
     } else {
-      pay(true, 'Melhor opção', 'No Pix, à vista', money(avista), money(soma),
-        P.descontoAvista + '% de desconto · economize ' + money(soma - avista),
+      var temDesc = avista < soma;
+      pay(temDesc, temDesc ? 'Melhor opção' : '', 'No Pix, à vista', money(avista), temDesc ? money(soma) : '',
+        temDesc ? (todosComDesc ? P.descontoAvista + '% de desconto · economize ' : 'Desconto à vista · economize ') + money(soma - avista) : '',
         'Pagamento único na aprovação do orçamento.', true);
-      // Pix em 2 vezes: a identidade visual não tem por padrão; o CRM pode liberar ou bloquear (d2=1 ou d2=0)
+      // Pix em 2 vezes: só landing page e site; identidade, logo e design de posts não têm (o CRM pode liberar ou bloquear: d2=1 ou d2=0)
       var d2 = q.get('d2'), semDuasVezes = d2 === '0' || (d2 !== '1' && projS.some(function (s) { return s.semPixEmDuasVezes; }));
       if (!temSocial && !semDuasVezes) {
         pay(false, '', 'No Pix, em 2 vezes', money(soma / 2), '+ ' + money(soma / 2), '',
           'Metade na entrada e metade na entrega final. O primeiro pagamento é antes de começar.');
       }
       pay(false, '', 'No cartão', money(cartao), cartaoDefinido ? 'em até 5x sem juros' : '', '',
-        cartaoDefinido ? 'A taxa do cartão já está incluída no valor.' : 'Sem desconto. Parcelado com os juros da maquininha do seu cartão.');
+        cartaoDefinido ? '' : 'Parcelado com os juros da maquininha do seu cartão.');
       if (grid.children.length === 3) grid.classList.add('paygrid--3');
-      byId('payExtra').textContent = (semDuasVezes ? 'Este orçamento é pago antes de começar: no Pix à vista ou parcelado no cartão, com a taxa do cartão repassada.' : 'Pagamento por Pix ou cartão, com a taxa do cartão repassada.') + (recS.length ? ' O Social Media é à parte: ' + money(recS[0].total / 3) + ' por mês, ou ' + money(Math.round(recS[0].total * (1 - P.descontoAvista / 100))) + ' pagando os 3 meses à vista no Pix.' : '');
+      var extra = recS.length ? 'O Social Media é à parte: ' + money(recS[0].total / 3) + ' por mês, ou ' + money(Math.round(recS[0].total * (1 - P.descontoAvista / 100))) + ' pagando os 3 meses à vista no Pix.' : '';
+      byId('payExtra').textContent = extra; byId('payExtra').hidden = !extra;
       byId('totalTxt').textContent = money(soma);
       byId('totalPix').textContent = money(avista);
     }
@@ -247,7 +252,9 @@
       var m = el('div', 'rec rec-opt');
       m.appendChild(el('span', 'rec-k', 'Manutenção · opcional'));
       m.appendChild(el('b', 'rec-v', '+ ' + money(P.manutencao.valor) + ' por mês'));
-      m.appendChild(el('p', null, P.manutencao.itens.join('. ') + '.'));
+      var ulm = el('ul', 'rec-list');
+      P.manutencao.itens.forEach(function (t) { ulm.appendChild(el('li', null, t)); });
+      m.appendChild(ulm);
       host.forEach(function (s) { m.appendChild(el('p', 'rec-sum', s.nome + ' com manutenção: ' + money(s.manutencao) + ' por mês.')); });
       rows.appendChild(m);
       r.appendChild(rows);
