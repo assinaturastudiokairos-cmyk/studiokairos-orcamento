@@ -255,7 +255,16 @@
       var ulm = el('ul', 'rec-list');
       P.manutencao.itens.forEach(function (t) { ulm.appendChild(el('li', null, t)); });
       m.appendChild(ulm);
-      host.forEach(function (s) { m.appendChild(el('p', 'rec-sum', s.nome + ' com manutenção: ' + money(s.manutencao) + ' por mês.')); });
+      // valores mensais com manutenção: um quadro limpo por serviço
+      var precos = el('div', 'rec-prices');
+      host.forEach(function (s) {
+        var q2 = el('div', 'rec-price');
+        q2.appendChild(el('span', 'rec-price-k', s.nome + ' com manutenção'));
+        q2.appendChild(el('b', 'rec-price-v', money(s.manutencao) + ' por mês'));
+        q2.appendChild(el('span', 'rec-price-s', 'Sem manutenção: ' + money(s.hospedagem) + ' por mês (só hospedagem)'));
+        precos.appendChild(q2);
+      });
+      m.appendChild(precos);
       rows.appendChild(m);
       r.appendChild(rows);
     }
