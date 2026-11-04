@@ -239,6 +239,11 @@
       byId('payExtra').textContent = extra; byId('payExtra').hidden = !extra;
       byId('totalTxt').textContent = money(soma);
       byId('totalPix').textContent = money(avista);
+      // sem desconto à vista: não repete o mesmo valor duas vezes
+      if (avista >= soma) {
+        var fecharP = document.querySelector('#fechar .lead');
+        if (fecharP) fecharP.textContent = 'Projeto completo por ' + money(soma) + (soAvistaTudo ? ', com pagamento à vista no Pix' : '') + '. É só aprovar que a gente já começa.';
+      }
     }
 
     var host = S.filter(function (s) { return s.hospedagem; });
