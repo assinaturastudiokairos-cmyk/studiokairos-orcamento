@@ -231,7 +231,7 @@
       var soAvistaTudo = projS.length > 0 && projS.every(function (s) { return s.soAvista; });
       if (!soAvistaTudo) {
         pay(false, '', 'No cartão', money(cartao), cartaoDefinido ? (base.every(function (s) { return s.cartaoTexto; }) ? base[0].cartaoTexto : 'em até 5x sem juros') : '', '',
-          cartaoDefinido ? '' : 'Parcelado com os juros da maquininha do seu cartão.');
+          cartaoDefinido ? 'Pagamento parcelado no cartão de crédito.' : 'Parcelado com os juros da maquininha do seu cartão.');
       }
       if (grid.children.length === 3) grid.classList.add('paygrid--3');
       if (grid.children.length === 1) grid.classList.add('paygrid--1');
