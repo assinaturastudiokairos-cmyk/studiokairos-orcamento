@@ -1,7 +1,7 @@
 /* ==========================================================================
    PRÉVIA (nova tabela com todas as mudanças da Gabi). Não está no ar.
    O link escolhe o que mostrar:  ?n=Maria Silva&s=site,identidade
-   Códigos dos serviços: social, identidade, landing, site, logo, posts
+   Códigos dos serviços: social, identidade, landing, site, siteia, logo, posts
    ========================================================================== */
 window.PRECOS = {
   descontoAvista: 5, // % de desconto no Pix à vista (só landing page e site institucional)
@@ -41,6 +41,30 @@ window.PRECOS = {
         'Apresentação da identidade visual',
         '3 mockups e 3 posts para ver sua marca no mundo real',
         'O prazo conta a partir do briefing enviado pelo cliente'
+      ]
+    },
+    siteia: {
+      nome: 'Site com IA',
+      icone: 'pagina',
+      desc: 'Uma opção mais acessível, ideal para empresas que desejam um site profissional com menor investimento.',
+      valorTexto: 'R$ 597',
+      total: 597,
+      prazo: '3 a 6 dias',
+      hospedagem: 47,
+      hospTexto: 'Seu site no ar, com dados salvos e manutenção de servidor.',
+      pacote: {
+        valor: 127,
+        itens: [
+          'Hospedagem do seu site',
+          'Manutenção de mudanças de números de celular, fotos ou textos',
+          'Não adicionamos outras seções sem custo adicional: novas seções são orçadas à parte'
+        ]
+      },
+      itens: [
+        'Uma página principal para apresentar o seu negócio com autoridade.',
+        'Copy estratégica, design e implementação feitos pelo Studio Kairós',
+        'Hospedagem: R$ 47 por mês, ou pacote de R$ 127 por mês com manutenção',
+        'O prazo conta a partir da aprovação de todas as informações'
       ]
     },
     landing: {

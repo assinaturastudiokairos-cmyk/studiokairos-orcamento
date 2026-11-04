@@ -246,26 +246,45 @@
         var c = el('div', 'rec');
         c.appendChild(el('span', 'rec-k', 'Hospedagem · ' + s.nome));
         c.appendChild(el('b', 'rec-v', money(s.hospedagem) + ' por mês'));
-        c.appendChild(el('p', null, 'Seu site no ar, com dados salvos e manutenção de servidor. O primeiro mês é grátis.'));
+        c.appendChild(el('p', null, s.hospTexto || 'Seu site no ar, com dados salvos e manutenção de servidor. O primeiro mês é grátis.'));
         rows.appendChild(c);
       });
-      var m = el('div', 'rec rec-opt');
-      m.appendChild(el('span', 'rec-k', 'Manutenção · opcional'));
-      m.appendChild(el('b', 'rec-v', '+ ' + money(P.manutencao.valor) + ' por mês'));
-      var ulm = el('ul', 'rec-list');
-      P.manutencao.itens.forEach(function (t) { ulm.appendChild(el('li', null, t)); });
-      m.appendChild(ulm);
-      // valores mensais com manutenção: um quadro limpo por serviço
-      var precos = el('div', 'rec-prices');
-      host.forEach(function (s) {
+      // quadro de valor mensal (usado na manutenção e no pacote)
+      var quadro = function (k, v, sub) {
         var q2 = el('div', 'rec-price');
-        q2.appendChild(el('span', 'rec-price-k', s.nome + ' com manutenção'));
-        q2.appendChild(el('b', 'rec-price-v', money(s.manutencao) + ' por mês'));
-        q2.appendChild(el('span', 'rec-price-s', 'Sem manutenção: ' + money(s.hospedagem) + ' por mês (só hospedagem)'));
-        precos.appendChild(q2);
+        q2.appendChild(el('span', 'rec-price-k', k));
+        q2.appendChild(el('b', 'rec-price-v', v));
+        q2.appendChild(el('span', 'rec-price-s', sub));
+        return q2;
+      };
+      // manutenção geral (landing page e site institucional)
+      var comMan = host.filter(function (s) { return !s.pacote; });
+      if (comMan.length) {
+        var m = el('div', 'rec rec-opt');
+        m.appendChild(el('span', 'rec-k', 'Manutenção · opcional'));
+        m.appendChild(el('b', 'rec-v', '+ ' + money(P.manutencao.valor) + ' por mês'));
+        var ulm = el('ul', 'rec-list');
+        P.manutencao.itens.forEach(function (t) { ulm.appendChild(el('li', null, t)); });
+        m.appendChild(ulm);
+        // valores mensais com manutenção: um quadro limpo por serviço
+        var precos = el('div', 'rec-prices');
+        comMan.forEach(function (s) { precos.appendChild(quadro(s.nome + ' com manutenção', money(s.manutencao) + ' por mês', 'Sem manutenção: ' + money(s.hospedagem) + ' por mês (só hospedagem)')); });
+        m.appendChild(precos);
+        rows.appendChild(m);
+      }
+      // pacote de hospedagem + manutenção (site com IA)
+      host.filter(function (s) { return s.pacote; }).forEach(function (s) {
+        var pk = el('div', 'rec rec-opt');
+        pk.appendChild(el('span', 'rec-k', 'Pacote de hospedagem + manutenção · opcional · ' + s.nome));
+        pk.appendChild(el('b', 'rec-v', money(s.pacote.valor) + ' por mês'));
+        var ulp = el('ul', 'rec-list');
+        s.pacote.itens.forEach(function (t) { ulp.appendChild(el('li', null, t)); });
+        pk.appendChild(ulp);
+        var pp = el('div', 'rec-prices');
+        pp.appendChild(quadro(s.nome + ' com o pacote', money(s.pacote.valor) + ' por mês', 'Só hospedagem: ' + money(s.hospedagem) + ' por mês'));
+        pk.appendChild(pp);
+        rows.appendChild(pk);
       });
-      m.appendChild(precos);
-      rows.appendChild(m);
       r.appendChild(rows);
     }
   }
