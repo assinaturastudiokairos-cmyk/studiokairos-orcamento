@@ -227,9 +227,14 @@
         pay(false, '', 'No Pix, em 2 vezes', money(soma / 2), '+ ' + money(soma / 2), '',
           'Metade na entrada e metade na entrega final. O primeiro pagamento é antes de começar.');
       }
-      pay(false, '', 'No cartão', money(cartao), cartaoDefinido ? 'em até 5x sem juros' : '', '',
-        cartaoDefinido ? '' : 'Parcelado com os juros da maquininha do seu cartão.');
+      // site com IA: só à vista no Pix (sem cartão), quando todos os serviços do orçamento são assim
+      var soAvistaTudo = projS.length > 0 && projS.every(function (s) { return s.soAvista; });
+      if (!soAvistaTudo) {
+        pay(false, '', 'No cartão', money(cartao), cartaoDefinido ? 'em até 5x sem juros' : '', '',
+          cartaoDefinido ? '' : 'Parcelado com os juros da maquininha do seu cartão.');
+      }
       if (grid.children.length === 3) grid.classList.add('paygrid--3');
+      if (grid.children.length === 1) grid.classList.add('paygrid--1');
       var extra = recS.length ? 'O Social Media é à parte: ' + money(recS[0].total / 3) + ' por mês, ou ' + money(Math.round(recS[0].total * (1 - P.descontoAvista / 100))) + ' pagando os 3 meses à vista no Pix.' : '';
       byId('payExtra').textContent = extra; byId('payExtra').hidden = !extra;
       byId('totalTxt').textContent = money(soma);
@@ -275,13 +280,13 @@
       // pacote de hospedagem + manutenção (site com IA)
       host.filter(function (s) { return s.pacote; }).forEach(function (s) {
         var pk = el('div', 'rec rec-opt');
-        pk.appendChild(el('span', 'rec-k', 'Pacote de hospedagem + manutenção · opcional · ' + s.nome));
-        pk.appendChild(el('b', 'rec-v', money(s.pacote.valor) + ' por mês'));
+        pk.appendChild(el('span', 'rec-k', 'Manutenção · opcional' + (comMan.length ? ' · ' + s.nome : '')));
+        pk.appendChild(el('b', 'rec-v', '+ ' + money(s.pacote.valor - s.hospedagem) + ' por mês'));
         var ulp = el('ul', 'rec-list');
         s.pacote.itens.forEach(function (t) { ulp.appendChild(el('li', null, t)); });
         pk.appendChild(ulp);
         var pp = el('div', 'rec-prices');
-        pp.appendChild(quadro(s.nome + ' com o pacote', money(s.pacote.valor) + ' por mês', 'Só hospedagem: ' + money(s.hospedagem) + ' por mês'));
+        pp.appendChild(quadro(s.nome + ' com manutenção', money(s.pacote.valor) + ' por mês', 'Sem manutenção: ' + money(s.hospedagem) + ' por mês (só hospedagem)'));
         pk.appendChild(pp);
         rows.appendChild(pk);
       });

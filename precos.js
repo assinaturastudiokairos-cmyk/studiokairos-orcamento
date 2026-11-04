@@ -46,24 +46,26 @@ window.PRECOS = {
     siteia: {
       nome: 'Site com IA',
       icone: 'pagina',
-      desc: 'Uma opção mais acessível, ideal para empresas que desejam um site profissional com menor investimento.',
+      soAvista: true,           // pagamento só à vista no Pix (sem Pix em 2 vezes e sem cartão)
+      semDesconto: true,        // sem o desconto de 5%
+      semPixEmDuasVezes: true,
+      desc: 'Feita para transformar visita em contato ou venda.',
       valorTexto: 'R$ 597',
       total: 597,
       prazo: '3 a 6 dias',
       hospedagem: 47,
-      hospTexto: 'Seu site no ar, com dados salvos e manutenção de servidor.',
       pacote: {
-        valor: 127,
+        valor: 127,             // hospedagem + manutenção
         itens: [
-          'Hospedagem do seu site',
+          'Hospedagem do seu site incluída',
           'Manutenção de mudanças de números de celular, fotos ou textos',
-          'Não adicionamos outras seções sem custo adicional: novas seções são orçadas à parte'
+          'Novas seções ou páginas não entram: são orçadas à parte, sem custo escondido'
         ]
       },
       itens: [
         'Uma página principal para apresentar o seu negócio com autoridade.',
         'Copy estratégica, design e implementação feitos pelo Studio Kairós',
-        'Hospedagem: R$ 47 por mês, ou pacote de R$ 127 por mês com manutenção',
+        'Hospedagem obrigatória: R$ 47 por mês (1 mês grátis)',
         'O prazo conta a partir da aprovação de todas as informações'
       ]
     },

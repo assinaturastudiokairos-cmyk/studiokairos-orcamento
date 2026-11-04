@@ -471,3 +471,4 @@
 .rec-price-k { font-size: .76rem; letter-spacing: .12em; text-transform: uppercase; color: var(--muted-2); }
 .rec-price-v { font-size: clamp(1.4rem, 3vw, 1.8rem); font-weight: 700; line-height: 1.1; color: var(--text); }
 .rec-price-s { color: var(--muted); font-size: .92rem; }
+.paygrid--1 { grid-template-columns: minmax(0, 560px); }
