@@ -56,11 +56,13 @@ window.PRECOS = {
       prazo: '3 a 6 dias',
       hospedagem: 47,
       pacote: {
-        valor: 127,             // hospedagem + manutenção
+        valor: 147,             // hospedagem + manutenção
         itens: [
-          'Hospedagem do seu site incluída',
-          'Manutenção de mudanças de números de celular, fotos ou textos',
-          'Novas seções ou páginas não entram: são orçadas à parte, sem custo escondido'
+          'Seu site sempre atualizado, sem preocupações. Nós cuidamos de tudo para você!',
+          'Precisa trocar imagens, textos, telefones, valores ou informações? Fazemos as alterações sem cobranças adicionais.',
+          'Encontrou algum erro ou problema no site? Cuidamos das correções para manter tudo funcionando.',
+          'Liberdade para atualizar o conteúdo sempre que precisar, sem pagar a mais por mudanças dentro da estrutura existente.',
+          'A única exceção é a criação de novas seções ou páginas, que são orçadas separadamente, sempre com aprovação prévia.'
         ]
       },
       itens: [
