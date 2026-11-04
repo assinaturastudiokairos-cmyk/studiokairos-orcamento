@@ -46,12 +46,13 @@ window.PRECOS = {
     siteia: {
       nome: 'Site com IA',
       icone: 'pagina',
-      soAvista: true,           // pagamento só à vista no Pix (sem Pix em 2 vezes e sem cartão)
       semDesconto: true,        // sem o desconto de 5%
       semPixEmDuasVezes: true,
-      desc: 'Feita para transformar visita em contato ou venda.',
+      desc: 'Uma opção mais acessível, ideal para empresas que desejam um site profissional com menor investimento.',
       valorTexto: 'R$ 597',
       total: 597,
+      cartao: 697,              // no cartão: R$ 697, em até 5x
+      cartaoTexto: 'em até 5x',
       prazo: '3 a 6 dias',
       hospedagem: 47,
       pacote: {
@@ -65,7 +66,7 @@ window.PRECOS = {
       itens: [
         'Uma página principal para apresentar o seu negócio com autoridade.',
         'Copy estratégica, design e implementação feitos pelo Studio Kairós',
-        'Hospedagem obrigatória: R$ 47 por mês (1 mês grátis)',
+        'SEO otimizado para mecanismos de busca.',
         'O prazo conta a partir da aprovação de todas as informações'
       ]
     },
@@ -142,8 +143,7 @@ window.PRECOS = {
       'Seu site sempre atualizado, sem preocupações. Nós cuidamos de tudo para você!',
       'Precisa trocar imagens, textos, telefones, valores ou informações? Fazemos as alterações sem cobranças adicionais.',
       'Encontrou algum erro ou problema no site? Cuidamos das correções para manter tudo funcionando.',
-      'Liberdade para atualizar o conteúdo sempre que precisar, sem pagar a mais por mudanças dentro da estrutura existente.',
-      'A única exceção é a criação de novas seções ou páginas, que são orçadas separadamente, sempre com aprovação prévia.'
+      'Liberdade para atualizar o conteúdo sempre que precisar, sem pagar a mais por mudanças dentro da estrutura existente.'
     ]
   }
 };

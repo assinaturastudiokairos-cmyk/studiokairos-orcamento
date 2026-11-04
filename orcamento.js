@@ -230,7 +230,7 @@
       // site com IA: só à vista no Pix (sem cartão), quando todos os serviços do orçamento são assim
       var soAvistaTudo = projS.length > 0 && projS.every(function (s) { return s.soAvista; });
       if (!soAvistaTudo) {
-        pay(false, '', 'No cartão', money(cartao), cartaoDefinido ? 'em até 5x sem juros' : '', '',
+        pay(false, '', 'No cartão', money(cartao), cartaoDefinido ? (base.every(function (s) { return s.cartaoTexto; }) ? base[0].cartaoTexto : 'em até 5x sem juros') : '', '',
           cartaoDefinido ? '' : 'Parcelado com os juros da maquininha do seu cartão.');
       }
       if (grid.children.length === 3) grid.classList.add('paygrid--3');
