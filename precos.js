@@ -46,7 +46,6 @@ window.PRECOS = {
     siteia: {
       nome: 'Site com IA',
       icone: 'pagina',
-      semDesconto: true,        // sem o desconto de 5%
       semPixEmDuasVezes: true,
       desc: 'Uma opção mais acessível, ideal para empresas que desejam um site profissional com menor investimento.',
       valorTexto: 'R$ 597',
